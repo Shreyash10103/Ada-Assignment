@@ -1,0 +1,411 @@
+#include <stdio.h>
+//# Ques 2:ass1
+
+#include <stdio.h>
+
+void last_brick(int n){
+    int counter  =1;
+
+    while(n >0){
+        n = n - counter*1;
+        if(n<=0){
+            printf(" Patlu ");
+            break;
+        }
+        n = n - counter*2;
+        if(n<=0){
+            printf("motu");
+            break;
+        }
+        counter +=1;
+    }
+ }
+
+
+int main() {
+    int n= 2;
+    last_brick(n);
+    return 0;
+}
+
+
+//# Ques1:assi1
+
+#include <iostream>
+using namespace std;
+ 
+// A recursive function used by countWays
+int countWays(int n)
+{
+    int res[n + 1];
+    res[0] = 1;
+    res[1] = 1;
+    res[2] = 2;
+    for (int i = 3; i <= n; i++)
+        res[i] = res[i - 1] + res[i - 2] + res[i - 3];
+ 
+    return res[n];
+}
+ 
+// Driver program to test above functions
+int main()
+{
+    int n = 5;
+    cout << countWays(n);
+    return 0;
+}
+
+//#Ques1 : assi2
+
+int main()
+{
+    char str[] = { "abbba" };
+  
+    // Start from leftmost and 
+    // rightmost corners of str
+    int l = 0;
+    int h = strlen(str) - 1;
+  
+    // Keep comparing characters
+    // while they are same
+    while (h > l) {
+        if (str[l++] != str[h--]) {
+            printf("%s is not a palindrome\n", str);
+            return 0;
+            // will return from here
+        }
+    }
+  
+    printf("%s is a palindrome\n", str);
+  
+    return 0;
+}
+
+# Alter
+
+#include <bits/stdc++.h>
+using namespace std;
+ 
+// Function to reverse a string
+void reverseStr(string& str)
+{
+    int n = str.length();
+ 
+    // Swap character starting from two
+    // corners
+    for (int i = 0; i < n / 2; i++)
+        swap(str[i], str[n - i - 1]);
+}
+ 
+// Driver program
+int main()
+{
+    string str = "geeksforgeeks";
+    reverseStr(str);
+    cout << str;
+    return 0;
+}
+
+//#Ques2: assi2
+
+// C++ program for the above approach
+#include <bits/stdc++.h>
+using namespace std;
+
+int power(int x, int n)
+{
+	// If x^0 return 1
+	if (n == 0)
+		return 1;
+	// If we need to find of 0^y
+	if (x == 0)
+		return 0;
+	// For all other cases
+	return x * power(x, n - 1);
+}
+
+// Driver Code
+int main()
+{
+	int x = 2;
+	int n = 3;
+
+	// Function call
+	cout << (power(x, n));
+}
+
+
+
+}
+
+
+
+
+
+//#Ques1:assi2
+
+int main()
+{
+    char str[] = { "abbba" };
+  
+    // Start from leftmost and 
+    // rightmost corners of str
+    int l = 0;
+    int h = strlen(str) - 1;
+  
+    // Keep comparing characters
+    // while they are same
+    while (h > l) {
+        if (str[l++] != str[h--]) {
+            printf("%s is not a palindrome\n", str);
+            return 0;
+            // will return from here
+        }
+    }
+  
+    printf("%s is a palindrome\n", str);
+  
+    return 0;
+}
+
+# Alter
+
+#include <bits/stdc++.h>
+using namespace std;
+ 
+// Function to reverse a string
+void reverseStr(string& str)
+{
+    int n = str.length();
+ 
+    // Swap character starting from two
+    // corners
+    for (int i = 0; i < n / 2; i++)
+        swap(str[i], str[n - i - 1]);
+}
+ 
+// Driver program
+int main()
+{
+    string str = "geeksforgeeks";
+    reverseStr(str);
+    cout << str;
+    return 0;
+}
+
+//Alter
+
+
+
+//2.2
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int power(int x, int n)
+{
+	// If x^0 return 1
+	if (n == 0)
+		return 1;
+	// If we need to find of 0^y
+	if (x == 0)
+		return 0;
+	// For all other cases
+	return x * power(x, n - 1);
+}
+
+// Driver Code
+int main()
+{
+	int x = 2;
+	int n = 3;
+
+	// Function call
+	cout << (power(x, n));
+}
+
+
+//3.1
+
+//python
+
+
+
+def insertAtBottom(stack, item):
+	if isEmpty(stack):
+		push(stack, item)
+	else:
+		temp = pop(stack)
+		insertAtBottom(stack, item)
+		push(stack, temp)
+
+
+def reverse(stack):
+	if not isEmpty(stack):
+		temp = pop(stack)
+		reverse(stack)
+		insertAtBottom(stack, temp)
+
+
+def createStack():
+	stack = []
+	return stack
+
+
+
+
+def isEmpty(stack):
+	return len(stack) == 0
+
+
+
+
+def push(stack, item):
+	stack.append(item)
+
+
+
+def pop(stack):
+
+
+	if(isEmpty(stack)):
+		print("Stack Underflow ")
+		exit(1)
+
+	return stack.pop()
+
+
+
+def prints(stack):
+	for i in range(len(stack)-1, -1, -1):
+		print(stack[i], end=' ')
+	print()
+
+
+
+stack = createStack()
+push(stack, str(4))
+push(stack, str(3))
+push(stack, str(2))
+push(stack, str(1))
+print("Original Stack ")
+prints(stack)
+
+reverse(stack)
+
+print("Reversed Stack ")
+prints(stack)
+			
+			
+//3.2
+//python
+			
+			
+def permute(ip, op):
+
+	
+	if len(ip) == 0:
+		print(op, end=" ")
+		return
+
+	
+	ch = ip[0].lower()
+	ch2 = ip[0].upper()
+	ip = ip[1:]
+	permute(ip, op+ch)
+	permute(ip, op+ch2)
+
+a=str(input())
+
+
+permute(a, "")
+			
+			
+			
+
+
+
+    
+
+
+    
+
+    
+
+	
+
+
+
+		
+
+
+
+
+
+
+			
+
+
+
+
+
+
+
+			
+			
+
+			
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
