@@ -1,0 +1,202 @@
+// Assignment 7a
+
+import random
+
+
+class Job:
+    def __init__(self, start_time, duration):
+        self.start_time = start_time
+        self.duration = duration
+        self.finish_time = start_time + duration
+        self.conflicts = 0
+
+    def __lt__(self, other):
+        return self.finish_time < other.finish_time
+
+    def conflicts_with(self, other_job):
+        if self.start_time >= other_job.finish_time or self.finish_time <= other_job.start_time:
+            return False
+        return True
+
+    def calculate_conflicts(self, jobs):
+        for job in jobs:
+            if self != job and self.conflicts_with(job):
+                self.conflicts += 1
+
+    def get_start_time(self):
+        return self.start_time
+
+    def get_finish_time(self):
+        return self.finish_time
+
+    def get_conflicts(self):
+        return self.conflicts
+
+
+# create 10 random jobs
+jobs = []
+for i in range(10):
+    start_time = random.randint(0, 9)
+    duration = random.randint(2, 6)
+    job = Job(start_time, duration)
+    jobs.append(job)
+
+# sort jobs by finish time
+jobs.sort()
+
+# perform greedy algorithm to generate to-do list
+to_do = []
+for job in jobs:
+    conflicts = 0
+    for to_do_job in to_do:
+        if job.conflicts_with(to_do_job):
+            conflicts += 1
+    if conflicts == 0:
+        to_do.append(job)
+
+# output to-do list
+print("To-do list:")
+for job in to_do:
+    print("Job starting at", job.get_start_time(),
+          "ending at", job.get_finish_time())
+
+# determine conflicts for each job
+for job in jobs:
+    job.calculate_conflicts(jobs)
+    print("Job starting at", job.get_start_time(), "ending at",
+          job.get_finish_time(), "has", job.get_conflicts(), "conflicts.")
+          
+          
+// Assignment 7b
+
+import heapq
+
+
+def prims(graph, start):
+    """Return the minimum spanning tree of a weighted graph using Prim's algorithm."""
+    mst = set()  # set of edges in the minimum spanning tree
+    visited = set([start])  # set of vertices visited so far
+    edges = [(weight, start, to) for to, weight in graph[start].items()]
+    heapq.heapify(edges)
+
+    while edges:
+        weight, frm, to = heapq.heappop(edges)
+        if to not in visited:
+            visited.add(to)
+            mst.add((frm, to, weight))
+            for to_next, weight_next in graph[to].items():
+                if to_next not in visited:
+                    heapq.heappush(edges, (weight_next, to, to_next))
+
+    return mst
+    
+    
+    
+ 
+// Assignment 8a
+# python
+
+def min_steps_to_convert(A, B):
+    m, n = len(A), len(B)
+    # Create a matrix to store the minimum steps to convert A[:i] to B[:j]
+    dp = [[0] * (n+1) for _ in range(m+1)]
+    # Initialize the first row and column
+    for i in range(1, m+1):
+        dp[i][0] = i
+    for j in range(1, n+1):
+        dp[0][j] = j
+    # Fill in the rest of the matrix using dynamic programming
+    for i in range(1, m+1):
+        for j in range(1, n+1):
+            if A[i-1] == B[j-1]:
+                dp[i][j] = dp[i-1][j-1]
+            else:
+                dp[i][j] = 1 + min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1])
+    # Return the minimum steps to convert A to B
+    return dp[m][n]
+
+
+print(min_steps_to_convert("abad", "abac"))
+
+// Assignment 8b
+
+def isMatch(text, pattern):
+    # Create a 2D array to store the results of matching the pattern to the text
+    dp = [[False] * (len(pattern) + 1) for _ in range(len(text) + 1)]
+
+    # Base case: an empty pattern matches an empty text
+    dp[0][0] = True
+
+    # Deal with patterns that start with '*'
+    for j in range(1, len(pattern) + 1):
+        if pattern[j - 1] == '*':
+            dp[0][j] = dp[0][j - 2]
+
+    # Fill in the rest of the table
+    for i in range(1, len(text) + 1):
+        for j in range(1, len(pattern) + 1):
+            if pattern[j - 1] in {text[i - 1], '.'}:
+                dp[i][j] = dp[i - 1][j - 1]
+            elif pattern[j - 1] == '*':
+                dp[i][j] = dp[i][j -
+                                 2] or (dp[i - 1][j] and pattern[j - 2] in {text[i - 1], '.'})
+
+    # Return the final result
+    return dp[-1][-1]
+    
+ // Assignment 9a
+ 
+
+def knapsack(W, wt, val, n):
+    K = [[0 for x in range(W+1)] for x in range(n+1)]
+    for i in range(n+1):
+        for w in range(W+1):
+            if i == 0 or w == 0:
+                K[i][w] = 0
+            elif wt[i-1] <= w:
+                K[i][w] = max(val[i-1] + K[i-1][w-wt[i-1]],  K[i-1][w])
+            else:
+                K[i][w] = K[i-1][w]
+    return K[n][W]
+
+
+# Example usage
+val = [60, 100, 120]
+wt = [10, 20, 30]
+W = 50
+n = len(val)
+print(knapsack(W, wt, val, n))
+
+
+// Assignment 9b
+
+def birthday_bombs(A, B):
+    # calculate dp using dynamic programming
+    dp = [0] + [-1] * A
+    last_friend = [-1] * (A+1)
+    for i in range(1, A+1):
+        for j in range(len(B)):
+            if B[j] <= i and dp[i-B[j]] != -1:
+                if dp[i] < dp[i-B[j]] + 1:
+                    dp[i] = dp[i-B[j]] + 1
+                    last_friend[i] = j
+                elif dp[i] == dp[i-B[j]] + 1:
+                    # choose lexicographically smallest friend
+                    if last_friend[i] == -1 or B[j] < B[last_friend[i]]:
+                        last_friend[i] = j
+
+    # construct the lexicographically smallest array
+    result = []
+    i = A
+    while i > 0:
+        j = last_friend[i]
+        result.extend([j] * dp[i])
+        i -= B[j] * dp[i]
+
+    return result[::-1]
+
+
+# example cases
+print(birthday_bombs(12, [3, 4]))  # should print [0, 0, 0, 0]
+print(birthday_bombs(11, [6, 8, 5, 4, 7]))  # should print [0, 2]
+
